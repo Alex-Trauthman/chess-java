@@ -27,3 +27,7 @@ hs_err_pid*
 \bin
 bin/
 .bin/
+.classpath/
+.project/
+.classpath
+.project
