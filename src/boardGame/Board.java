@@ -54,7 +54,7 @@ public class Board {
 		return positionExists(position.getRow(),position.getColumn());
 	}
 	private boolean positionExists(int row, int column) {
-		return row >=0 && row< rows && columns >=0 && column <columns;
+		return row >=0 && row< rows && column >=0 && column <columns;
 	}
 	public boolean thereIsAPiece(Position position) {
 		if(!positionExists(position)) {
