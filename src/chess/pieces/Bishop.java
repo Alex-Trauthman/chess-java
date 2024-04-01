@@ -1,0 +1,61 @@
+package chess.pieces;
+
+import boardGame.Board;
+import boardGame.Position;
+import chess.ChessPiece;
+import chess.Color;
+
+public class Bishop extends ChessPiece{
+
+	public Bishop(Board board, Color color) {
+		super(board, color);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "B";
+	}	
+	@Override
+	public boolean[][] possibleMoves() {
+		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
+		
+		Position aux = new Position(0,0);
+		//upper left
+		aux.setValues(position.getRow()-1, position.getColumn()-1);
+		while((getBoard().positionExists(aux))&&!(getBoard().thereIsAPiece(aux))) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+			aux.setValues(aux.getRow()-1, aux.getColumn()-1);
+		}if(getBoard().positionExists(aux)&& isThereOponentPiece(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+		}
+		//upper right
+		aux.setValues(position.getRow()-1, position.getColumn()+1);
+		while((getBoard().positionExists(aux))&&!(getBoard().thereIsAPiece(aux))) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+			aux.setValues(aux.getRow()-1, aux.getColumn()+1);
+		}if(getBoard().positionExists(aux)&& isThereOponentPiece(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+		}
+		//lower left
+		aux.setValues(position.getRow()+1, position.getColumn()-1);
+		while((getBoard().positionExists(aux))&&!(getBoard().thereIsAPiece(aux))) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+			aux.setValues(aux.getRow()+1, aux.getColumn()-1);
+		}if(getBoard().positionExists(aux)&& isThereOponentPiece(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+		}
+		//lower right
+		aux.setValues(position.getRow()+1, position.getColumn()+1);
+		while((getBoard().positionExists(aux))&&!(getBoard().thereIsAPiece(aux))) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+			aux.setValues(aux.getRow()+1, aux.getColumn()+1);
+		}if(getBoard().positionExists(aux)&& isThereOponentPiece(aux)) {
+			mat[aux.getRow()][aux.getColumn()] = true;
+		}
+		
+		return mat;
+	}
+	
+	
+}
