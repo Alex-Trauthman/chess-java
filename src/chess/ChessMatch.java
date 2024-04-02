@@ -21,6 +21,7 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVunerable;
+	private ChessPiece promoted;
 	
 	private List <Piece> piecesOnTheBoard = new ArrayList<>();
 	private List <Piece> capturedPieces = new ArrayList<>();
@@ -44,6 +45,9 @@ public class ChessMatch {
 	
 	public int getTurn() {
 		return turn;
+	}
+	public ChessPiece getPromoted() {
+		return promoted;
 	}
 	
 	public boolean getCheckMate() {
@@ -82,7 +86,13 @@ public class ChessMatch {
 			throw new ChessException("You can't put yourself in check");
 		}
 		ChessPiece movedPiece = (ChessPiece)board.piece(target);
-		
+		promoted = null;
+		if(movedPiece instanceof Pawn) {
+			if((movedPiece.getColor() == Color.WHITE && target.getRow() == 0)||(movedPiece.getColor()== Color.BLACK && target.getRow() == 7)) {
+				promoted = (ChessPiece)board.piece(target);
+				promoted = replacePromotedPiece("Q");
+			}
+		}
 		check = (testCheck(opponent(currentPlayer)))? true : false;
 		
 		if(testCheckMate(opponent(currentPlayer))) {
@@ -226,6 +236,7 @@ public class ChessMatch {
 				return true;
 			}
 		}
+		
 		return false;
 	}
 	
@@ -259,6 +270,42 @@ public class ChessMatch {
 	private void placeNewPiece(char column, int row, ChessPiece piece) {
 		board.placePiece(piece, new ChessPosition(column, row).toPosition());
 		piecesOnTheBoard.add(piece);
+	}
+	
+	public ChessPiece replacePromotedPiece(String piece) {
+		if (promoted == null) {
+			throw new IllegalStateException("There isn't a piece to be promoted");
+		}
+		
+		Position pos = promoted.getChessPosition().toPosition();
+		Piece p = board.removePiece(pos);
+		piecesOnTheBoard.remove(p);
+		ChessPiece newPiece ;
+		
+		switch (piece) {
+		case "Q":{
+			newPiece = new Queen(board,promoted.getColor());
+			break;
+		}
+		case "N":{
+			newPiece = new Knight(board,promoted.getColor());
+			break;
+		}
+		case "B":{
+			newPiece = new Bishop(board,promoted.getColor());
+			break;
+		}
+		case "R":{
+			newPiece = new Rook(board,promoted.getColor());
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("You can only add  Q, N, B, R. But not" + piece);
+		} 
+		board.placePiece(newPiece, pos);
+		piecesOnTheBoard.add(newPiece);
+		
+		return newPiece;
 	}
 	
 	private void initialSetup() {
