@@ -300,7 +300,7 @@ public class ChessMatch {
 			break;
 		}
 		default:
-			throw new IllegalArgumentException("You can only add  Q, N, B, R. But not" + piece);
+			throw new IllegalArgumentException("You can only add  Q, N, B, R. But not: " + piece);
 		} 
 		board.placePiece(newPiece, pos);
 		piecesOnTheBoard.add(newPiece);
